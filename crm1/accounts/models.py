@@ -55,6 +55,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, null = True, on_delete = models.SET_NULL)
     product = models.ForeignKey(Product, null = True, on_delete = models.SET_NULL)
     status = models.CharField(max_length = 200, choices = STATUS, null = True)
+    note = models.CharField(max_length = 1000, null = True)
     date_created = models.DateTimeField(auto_now_add = True, null = True)
 
     def __str__(self):
