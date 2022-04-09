@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.forms import inlineformset_factory
 
 from .forms import OrderForm
 from .models import *
@@ -47,18 +48,27 @@ def customer(request, customer_id):
 
     return render(request, 'accounts/customer.html', context)
 
-def create_order(request):
+def create_order(request, customer_id):
+    customer = Customer.objects.get(id = customer_id)
+
+    # Extra = 10 means there are 10 rows each.
+    OrderFormSet = inlineformset_factory(Customer, Order, fields = (
+        'product',
+        'status'
+    ), extra = 10)
+
     if request.method == 'POST':
-        form = OrderForm(request.POST)
+        formset = OrderFormSet(request.POST, instance = customer)
         
-        if form.is_valid():
-            form.save()
+        if formset.is_valid():
+            formset.save()
             return redirect('/')
 
-    form = OrderForm()
+    # With queryset, currently existed items will not appears.
+    formset = OrderFormSet(queryset = Order.objects.none(), instance = customer)
 
     context = {
-        'form' : form
+        'formset' : formset
     }
 
     return render(request, 'accounts/order_form.html', context)
