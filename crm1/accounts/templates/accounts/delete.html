@@ -3,11 +3,19 @@
 
 {% block content %}
 
-<p>Are you want to delete "{{ item }}"?</p>
+<br/>
 
-<form action="{% url 'delete_order' item.id %}" method='POST'>
-    {% csrf_token %}
-    <a href="{% url 'home' %}" class='btn btn-primary'>Cancel</a>
-    <button type='submit' class='btn btn-danger'>Delete</button>
-</form>
+<div class='row'>
+    <div class='col-md-6'>
+        <div class='card card-body'>
+            <p>Are you sure you want to delete "{{ item }}"?</p>
+
+            <form action="{% url 'delete_order' item.id %}" method='POST'>
+                {% csrf_token %}
+                <a href="{% url 'home' %}" class='btn btn-primary'>Cancel</a>
+                <button type='submit' class='btn btn-danger'>Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

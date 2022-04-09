@@ -6,10 +6,15 @@
 
 <br/>
 
-<form method='POST' action=''>
-    {% csrf_token %}
-    {{ form }}
-    <button class='btn btn-primary' type="submit">Submit</button>
-</form>
-
+<div class='row'>
+    <div class='col-md-6'>
+        <div class='card card-body'>
+            <form method='POST' action=''>
+                {% csrf_token %}
+                {{ form }}
+                <button class='btn btn-primary' type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
