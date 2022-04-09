@@ -14,6 +14,15 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+class Tag(models.Model):
+    '''Tag model
+    '''
+
+    name = models.CharField(max_length = 200, null = True)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     '''Product model
     '''
@@ -26,8 +35,12 @@ class Product(models.Model):
     name = models.CharField(max_length = 200, null = True)
     price = models.FloatField(null = True)
     category = models.CharField(max_length = 200, choices = CATEGORIES, null = True)
-    description = models.CharField(max_length = 200, null = True)
+    tags = models.ManyToManyField(Tag)
+    description = models.CharField(max_length = 200, null = True, blank = True)
     date_created = models.DateTimeField(auto_now_add = True, null = True)
+
+    def __str__(self):
+        return self.name
 
 class Order(models.Model):
     '''Order model
@@ -39,7 +52,7 @@ class Order(models.Model):
         ('Delivered', 'Delivered')
     )
 
-    # customer = 
-    # product = 
+    customer = models.ForeignKey(Customer, null = True, on_delete = models.SET_NULL)
+    product = models.ForeignKey(Product, null = True, on_delete = models.SET_NULL)
     status = models.CharField(max_length = 200, choices = STATUS, null = True)
     date_created = models.DateTimeField(auto_now_add = True, null = True)
