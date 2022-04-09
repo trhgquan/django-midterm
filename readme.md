@@ -1,10 +1,16 @@
-# Midterm dummy Django Project for Introduction to Software Engineering (CSC13002)
+# Dummy Django Project, Introduction to Software Engineering (CSC13002)
+A dummy Django Project for Introduction to Software Engineering (CSC13002) midterm personal lab.
 
 |SID|Name|
 |---|----|
 |19120338|Tran Hoang Quan|
 
-Playlist link: https://www.youtube.com/watch?v=xv_bwpA_aEA&list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO
+Tutorial playlist: https://www.youtube.com/watch?v=xv_bwpA_aEA&list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO
+
+## Installation
+```
+pip install -r requirements.txt
+```
 
 ## Notes
 ### 1. Authentication for administrator
