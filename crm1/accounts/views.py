@@ -91,10 +91,10 @@ def update_order(request, order_id):
     form = OrderForm(instance = order)
 
     context = {
-        'form' : form
+        'form' : form,
     }
 
-    return render(request, 'accounts/order_form.html', context)
+    return render(request, 'accounts/update_order_form.html', context)
 
 def delete_order(request, order_id):
     order = Order.objects.get(id = order_id)
