@@ -6,6 +6,10 @@ body {
     background-color: #ebeff5;
 }
 
+footer {
+    margin-top : 30px;
+}
+
 #total-orders {
     background-color: #4cb4b7;
 }
