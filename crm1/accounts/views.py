@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
 from .decorators import admin_only, allowed_users, unauthenticated_user
-from .forms import LoginForm, OrderForm, CreateUserForm
+from .forms import CustomerForm, LoginForm, OrderForm, CreateUserForm
 from .filters import OrderFilter
 from .models import *
 
@@ -92,7 +92,25 @@ def user_page(request):
         'pending_orders' : pending_orders,
     }
 
-    return render(request, 'accounts/user.html', context)
+    return render(request, 'accounts/user/user.html', context)
+
+@login_required(login_url = 'login')
+def account_page(request):
+    customer = request.user.customer    
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance = customer)
+
+        if form.is_valid():
+            form.save()
+
+    form = CustomerForm(instance = customer)
+
+    context = {
+        'form' : form,
+    }
+
+    return render(request, 'accounts/user/account.html', context)
 
 @login_required(login_url = 'login')
 @admin_only
