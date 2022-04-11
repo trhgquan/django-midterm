@@ -15,10 +15,23 @@
                 {{ formset.management_form }}
 
                 {% for form in formset %}
-                    {{ form }}
-                    <hr/>
+                <div class='form-row'>
+                    <div class='form-group col-md-4'>
+                        {{ form.product.label }}
+                        {{ form.product }}
+                    </div>
+                    <div class='form-group col-md-4'>
+                        {{ form.status.label }}
+                        {{ form.status }}
+                    </div>
+                    <div class='form-group col-md-4'>
+                        {{ form.DELETE.label }}
+                        {{ form.DELETE }}
+                    </div>
+                </div>
                 {% endfor %}
                 <button class='btn btn-primary' type="submit">Submit</button>
+                <button class='btn btn-info' type="reset">Reset</button>
             </form>
         </div>
     </div>

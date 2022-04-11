@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.forms import inlineformset_factory
@@ -170,10 +171,26 @@ def create_order(request, customer_id):
     customer = Customer.objects.get(id = customer_id)
 
     # Extra = 10 means there are 10 rows each.
-    OrderFormSet = inlineformset_factory(Customer, Order, fields = (
-        'product',
-        'status'
-    ), extra = 10)
+    OrderFormSet = inlineformset_factory(
+        Customer, Order, 
+        fields = (
+            'product',
+            'status'
+        ),
+        widgets = {
+            'product' : forms.Select(attrs = {
+                'class' : 'form-control',
+            }),
+            'status' : forms.Select(attrs = {
+                'class' : 'form-control',
+            }),
+            'DELETE' : forms.CheckboxInput(attrs = {
+                'class' : 'form-check-input',
+                'type' : 'checkbox',
+            })
+        },
+        extra = 10
+    )
 
     if request.method == 'POST':
         formset = OrderFormSet(request.POST, instance = customer)

@@ -13,6 +13,19 @@ class CustomerForm(ModelForm):
             'user',
         ]
 
+        widgets = {
+            'name' : forms.TextInput(attrs = {
+                'class' : 'form-control'
+            }),
+            'phone' : forms.TextInput(attrs = {
+                'class' : 'form-control',
+            }),
+            'email' : forms.TextInput(attrs = {
+                'class' : 'form-control',
+                'type' : 'email',
+            }),
+        }
+
 class OrderForm(ModelForm):
     '''Form to create orders
     '''
@@ -44,8 +57,8 @@ class OrderForm(ModelForm):
             'note' : forms.Textarea(
                 attrs = {
                     'class' : 'form-control',
-                    'rows' : '3'
-                }
+                    'rows' : '3',
+                },
             )
         }
 
