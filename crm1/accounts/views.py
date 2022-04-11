@@ -4,26 +4,30 @@ from django.forms import inlineformset_factory
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
+from .decorators import admin_only, allowed_users, unauthenticated_user
 from .forms import LoginForm, OrderForm, CreateUserForm
 from .filters import OrderFilter
 from .models import *
 
 # Create your views here.
 
+@unauthenticated_user
 def register_page(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-    
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            user = form.save()
 
             # Get cleaned data
-            username = form.clean_data.get('username')
+            username = form.cleaned_data.get('username')
+
+            # Default role is customer
+            group = Group.objects.get(name = 'customer')
+            user.groups.add(group)
 
             # And create a flash message.
             messages.success(request, 'Account was created for ' + username)
@@ -40,10 +44,8 @@ def register_page(request):
 
     return render(request, 'accounts/auth/register.html', context)
 
+@unauthenticated_user
 def login_page(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -71,6 +73,12 @@ def logout_page(request):
     return redirect('login')
 
 @login_required(login_url = 'login')
+def user_page(request):
+    context = {}
+    return render(request, 'accounts/user.html', context)
+
+@login_required(login_url = 'login')
+@admin_only
 def home(request):
     orders = Order.objects.all()
     customers = Customer.objects.all()
@@ -92,6 +100,7 @@ def home(request):
     return render(request, 'accounts/dashboard.html', context)
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def products(request):
     products = Product.objects.all()
 
@@ -102,6 +111,7 @@ def products(request):
     return render(request, 'accounts/products.html', context)
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def customer(request, customer_id):
     customer = Customer.objects.get(id = customer_id)
     orders = customer.order_set.all()
@@ -120,6 +130,7 @@ def customer(request, customer_id):
     return render(request, 'accounts/customer.html', context)
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def create_order(request, customer_id):
     customer = Customer.objects.get(id = customer_id)
 
@@ -143,9 +154,10 @@ def create_order(request, customer_id):
         'formset' : formset
     }
 
-    return render(request, 'accounts/order_form.html', context)
+    return render(request, 'accounts/order/create_order_form.html', context)
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def update_order(request, order_id):
     order = Order.objects.get(id = order_id)
 
@@ -162,9 +174,10 @@ def update_order(request, order_id):
         'form' : form,
     }
 
-    return render(request, 'accounts/update_order_form.html', context)
+    return render(request, 'accounts/order/update_order_form.html', context)
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['admin'])
 def delete_order(request, order_id):
     order = Order.objects.get(id = order_id)
 
@@ -176,4 +189,4 @@ def delete_order(request, order_id):
         'item' : order,
     }
 
-    return render(request, 'accounts/delete.html', context)
+    return render(request, 'accounts/order/delete_order_form.html', context)
