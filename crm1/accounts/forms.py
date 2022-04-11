@@ -25,6 +25,30 @@ class OrderForm(ModelForm):
         #   'customer', 'id', ..etc
         # ]
 
+        widgets = {
+            'customer' : forms.Select(
+                attrs = {
+                    'class' : 'form-control',
+                },
+            ),
+            'product' : forms.Select(
+                attrs = {
+                    'class' : 'form-control',
+                },
+            ),
+            'status' : forms.Select(
+                attrs = {
+                    'class' : 'form-control',
+                },
+            ),
+            'note' : forms.Textarea(
+                attrs = {
+                    'class' : 'form-control',
+                    'rows' : '3'
+                }
+            )
+        }
+
 class LoginForm(AuthenticationForm):
     username = forms.CharField(widget = forms.TextInput(
         attrs = {

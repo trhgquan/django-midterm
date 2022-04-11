@@ -17,22 +17,8 @@
         <form method='POST' action=''>
             {% csrf_token %}
 
-            <div class='form-group'>
-                <label for='id_username'>{{ form.username.label }}</label>
-                {{ form.username }}
-            </div>
-            <div class='form-group'>
-                <label for='id_email'>{{ form.email.label }}</label>
-                {{ form.email }}
-            </div>
-            <div class='form-group'>
-                <label for='id_password1'>{{ form.password1.label }}</label>
-                {{ form.password1 }}
-            </div>
-            <div class='form-group'>
-                <label for='id_password2'>{{ form.password2.label }}</label>
-                {{ form.password2 }}
-            </div>
+            {{ form.as_p }}
+
             <div class='form-group'>
                 <button class='btn btn-outline-primary' type='submit'>Create a new account</button>
                 <button class='btn btn-outline-info' type='reset'>Reset form</button>

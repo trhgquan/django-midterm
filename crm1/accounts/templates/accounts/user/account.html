@@ -1,5 +1,7 @@
 {% extends 'accounts/main.html' %}
 
+{% load static %}
+
 {% block content %}
 <br/>
 
@@ -10,7 +12,7 @@
             <hr/>
             <center><h3>Account settings</h3></center>
             <hr/>
-            <img class='img-thumbnail' src="{{ request.user.customer.profile_pic.url }}"/>
+            <img class='img-thumbnail' src="{{ request.user.customer.profile_picture.url }}"/>
         </div>
     </div>
 

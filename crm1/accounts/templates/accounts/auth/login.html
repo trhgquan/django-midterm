@@ -13,15 +13,9 @@
         {% endfor %}
         <form method='POST' action=''>
             {% csrf_token %}
-            
-            <div class='form-group'>
-                <label for='id_username'>{{ form.username.label }}</label>
-                {{ form.username }}
-            </div>
-            <div class='form-group'>
-                <label for='id_password'>{{ form.password.label }}</label>
-                {{ form.password }}
-            </div>
+
+            {{ form.as_p }}
+
             <div class='form-group'>
                 <button class='btn btn-outline-primary btn-block' type='submit'>Login</button>
             </div>
