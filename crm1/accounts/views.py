@@ -28,6 +28,9 @@ def register_page(request):
             # Default role is customer
             group = Group.objects.get(name = 'customer')
             user.groups.add(group)
+            Customer.objects.create(
+                user = user,
+            )
 
             # And create a flash message.
             messages.success(request, 'Account was created for ' + username)
@@ -73,8 +76,20 @@ def logout_page(request):
     return redirect('login')
 
 @login_required(login_url = 'login')
+@allowed_users(allowed_roles = ['customer'])
 def user_page(request):
-    context = {}
+    orders = request.user.customer.order_set.all()
+    total_orders = orders.count()
+    delivered_orders = orders.filter(status = 'Delivered').count()
+    pending_orders = orders.filter(status = 'Pending').count()
+
+    context = {
+        'total_orders' : total_orders,
+        'orders' : orders,
+        'delivered_orders' : delivered_orders,
+        'pending_orders' : pending_orders,
+    }
+
     return render(request, 'accounts/user.html', context)
 
 @login_required(login_url = 'login')
