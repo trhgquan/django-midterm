@@ -5,7 +5,6 @@ from django.forms import inlineformset_factory
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 
 from .decorators import admin_only, allowed_users, unauthenticated_user
@@ -21,18 +20,18 @@ def register_page(request):
         form = CreateUserForm(request.POST)
 
         if form.is_valid():
-            user = form.save()
+            form.save()
 
             # Get cleaned data
             username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
 
             # And create a flash message.
             messages.success(request, 'Account was created for ' + username)
-
+    
             return redirect('login')
         else:
-            messages.error(request, 'Failed to create new account')
+            error_messages = ''.join(message for message in form.error_messages.keys())
+            messages.error(request, 'Failed to create new account: ' + error_messages)
 
     form = CreateUserForm()
 
