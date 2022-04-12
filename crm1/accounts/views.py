@@ -27,14 +27,6 @@ def register_page(request):
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
 
-            # Default role is customer
-            group = Group.objects.get(name = 'customer')
-            user.groups.add(group)
-            Customer.objects.create(
-                user = user,
-                email = email,
-            )
-
             # And create a flash message.
             messages.success(request, 'Account was created for ' + username)
 
