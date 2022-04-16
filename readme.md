@@ -12,6 +12,17 @@ Tutorial playlist: https://www.youtube.com/watch?v=xv_bwpA_aEA&list=PL-51WBLyFTg
 pip install -r requirements.txt
 ```
 
+Run `python manage.py shell` to enter shell interface, then
+```python3
+from django.core.management.utils import get_random_secret_key  
+get_random_secret_key()
+```
+
+Paste that newly-generated key to `crm1/.env`:
+```
+SECRET_KEY = 'your newly created key'
+```
+
 ## Notes
 ### 1. Authentication for administrator
 ```
